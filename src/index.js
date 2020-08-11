@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 function component() {
   const scene = new THREE.Scene();
@@ -7,23 +8,44 @@ function component() {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+  const controls = new OrbitControls(camera, renderer.domElement);
+
+  let sphereGeometry = new THREE.SphereGeometry(1, 64, 32);
+  let sphere = new THREE.Mesh(sphereGeometry, new THREE.MeshBasicMaterial({ color: 0xFFFF00 }));
+
+  scene.add(sphere);
+
+  sphereGeometry = new THREE.SphereGeometry(1, 64, 32);
+  sphere = new THREE.Mesh(sphereGeometry, new THREE.MeshBasicMaterial({ color: 0x00FFFF }));
+  sphere.position.x += 5;
+
+  scene.add(sphere);
+
+  const size = 10;
+  const divisions = 10;
+
+  const gridHelper = new THREE.GridHelper(size, divisions);
+  scene.add(gridHelper);
 
   camera.position.z = 5;
+  camera.position.y = 5;
+  controls.update();
+
+  let angle = 0;
 
   const animate = () => {
     requestAnimationFrame(animate);
 
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    controls.update();
+    sphere.position.x = 5 * Math.cos(angle * (Math.PI / 180));
+    sphere.position.z = 5 * Math.sin(angle * (Math.PI / 180));
+
+    angle += 1;
 
     renderer.render(scene, camera);
   };
 
-  animate();
+  animate(angle);
 
   return renderer.domElement;
 }
