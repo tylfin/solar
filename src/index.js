@@ -9,11 +9,12 @@ let setupGUI;
 let gridChanged = true;
 
 const effectController = {
-  targetEarth: false,
-  targetSun: true,
+  targetEarth: true,
+  targetSun: false,
   grid: true,
   earthOrbit: true,
   earthRotate: true,
+  earthCloudsRotate: true,
   sunRotate: true,
   earthSpeed: 0.005,
 };
@@ -78,6 +79,15 @@ function main() {
       solarSystem.sun.rotation.y = 13.5 * angle * (Math.PI / 180);
     }
 
+    if (effectController.earthCloudsRotate) {
+      solarSystem.earth.traverse((obj) => {
+        if (obj instanceof THREE.Mesh && obj.name === 'clouds') {
+          // eslint-disable-next-line
+          obj.rotation.y = -5 * angle * (Math.PI / 180);
+        }
+      });
+    }
+
     angle += effectController.earthSpeed;
 
     if (effectController.targetSun) {
@@ -113,6 +123,7 @@ setupGUI = () => {
   gui.add(effectController, 'earthSpeed', 0.001, 0.1, 0.001).name('Earth Speed');
   gui.add(effectController, 'earthOrbit').name('Earth Orbiting');
   gui.add(effectController, 'earthRotate').name('Earth Rotating');
+  gui.add(effectController, 'earthCloudsRotate').name('Earth Clouds Rotating');
   gui.add(effectController, 'sunRotate').name('Sun Rotating');
   const targetEarthController = gui.add(effectController, 'targetEarth').name('Focus Earth');
   const targetSunController = gui.add(effectController, 'targetSun').name('Focus Sun');
