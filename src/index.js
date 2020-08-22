@@ -16,7 +16,7 @@ const effectController = {
   earthRotate: true,
   earthCloudsRotate: true,
   sunRotate: true,
-  earthSpeed: 0.005,
+  speed: 0.005,
 };
 
 // createSolarSystem
@@ -88,7 +88,7 @@ function main() {
       });
     }
 
-    angle += effectController.earthSpeed;
+    angle += effectController.speed;
 
     if (effectController.targetSun) {
       controls.target.copy(solarSystem.sun.position);
@@ -120,13 +120,18 @@ setupGUI = () => {
     gridChanged = true;
   });
 
-  gui.add(effectController, 'earthSpeed', 0.001, 0.1, 0.001).name('Earth Speed');
-  gui.add(effectController, 'earthOrbit').name('Earth Orbiting');
-  gui.add(effectController, 'earthRotate').name('Earth Rotating');
-  gui.add(effectController, 'earthCloudsRotate').name('Earth Clouds Rotating');
-  gui.add(effectController, 'sunRotate').name('Sun Rotating');
-  const targetEarthController = gui.add(effectController, 'targetEarth').name('Focus Earth');
-  const targetSunController = gui.add(effectController, 'targetSun').name('Focus Sun');
+  gui.add(effectController, 'speed', 0.001, 0.1, 0.001).name('Speed');
+
+  const earthFolder = gui.addFolder('Earth');
+  const sunFolder = gui.addFolder('Sun');
+  const cameraFolder = gui.addFolder('Camera');
+
+  earthFolder.add(effectController, 'earthOrbit').name('Earth Orbiting');
+  earthFolder.add(effectController, 'earthRotate').name('Earth Rotating');
+  earthFolder.add(effectController, 'earthCloudsRotate').name('Clouds Rotating');
+  sunFolder.add(effectController, 'sunRotate').name('Sun Rotating');
+  const targetEarthController = cameraFolder.add(effectController, 'targetEarth').name('Focus Earth');
+  const targetSunController = cameraFolder.add(effectController, 'targetSun').name('Focus Sun');
 
   targetEarthController.onChange((val) => {
     if (val) {
