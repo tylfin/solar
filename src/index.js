@@ -16,7 +16,7 @@ const effectController = {
   earthRotate: true,
   earthCloudsRotate: true,
   sunRotate: true,
-  speed: 0.005,
+  speed: 0.1,
 };
 
 // createSolarSystem
@@ -58,9 +58,13 @@ function main() {
   camera.position.z = 5;
 
   let angle = 0;
+  let delta;
+  const clock = new THREE.Clock();
 
   const animate = () => {
     requestAnimationFrame(animate);
+
+    delta = clock.getDelta();
 
     controls.update();
 
@@ -71,7 +75,7 @@ function main() {
 
     if (effectController.earthRotate) {
       // In one full rotation, earth will rotate 365 times
-      solarSystem.earth.rotation.y = 365 * angle * (Math.PI / 180);
+      // solarSystem.earth.rotation.y = 365 * angle * (Math.PI / 180);
     }
 
     if (effectController.sunRotate) {
@@ -88,7 +92,8 @@ function main() {
       });
     }
 
-    angle += effectController.speed;
+    // We want effectController.speed is angle / second
+    angle += effectController.speed * delta;// / elapsedTime;
 
     if (effectController.targetSun) {
       controls.target.copy(solarSystem.sun.position);
@@ -120,7 +125,7 @@ setupGUI = () => {
     gridChanged = true;
   });
 
-  gui.add(effectController, 'speed', 0.001, 0.1, 0.001).name('Speed');
+  gui.add(effectController, 'speed', 0.01, 3.0, 0.01).name('Speed');
 
   const earthFolder = gui.addFolder('Earth');
   const sunFolder = gui.addFolder('Sun');

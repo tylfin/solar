@@ -15,7 +15,6 @@ export default () => {
   earthTextureMap.specularMap = earthSpecularMap;
   earthTextureMap.wrapS = THREE.RepeatWrapping;
   earthTextureMap.wrapT = THREE.RepeatWrapping;
-  earthTextureMap.anisotropy = 16;
 
   const material = new THREE.MeshPhongMaterial({ map: earthTextureMap, side: THREE.FrontSide });
   material.shininess = 3;
@@ -23,6 +22,7 @@ export default () => {
   const sphereGeometry = new THREE.SphereGeometry(earthRadius, 64, 32);
   const earth = new THREE.Mesh(sphereGeometry, material);
   earth.rotation.x = 23.5 * (Math.PI / 180);
+  // earth.position.x += 5;
 
   const earthCloudTransMap = new THREE.TextureLoader().load(EarthCloudTransMap);
 
