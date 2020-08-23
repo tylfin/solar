@@ -22,7 +22,6 @@ export default () => {
   const sphereGeometry = new THREE.SphereGeometry(earthRadius, 64, 32);
   const earth = new THREE.Mesh(sphereGeometry, material);
   earth.rotation.x = 23.5 * (Math.PI / 180);
-  // earth.position.x += 5;
 
   const earthCloudTransMap = new THREE.TextureLoader().load(EarthCloudTransMap);
 

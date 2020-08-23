@@ -75,7 +75,7 @@ function main() {
 
     if (effectController.earthRotate) {
       // In one full rotation, earth will rotate 365 times
-      // solarSystem.earth.rotation.y = 365 * angle * (Math.PI / 180);
+      solarSystem.earth.rotation.y = 365 * angle * (Math.PI / 180);
     }
 
     if (effectController.sunRotate) {
